@@ -1,3 +1,6 @@
-# IMPORTANT:
+# Cart Hunt
 
-## Make sure to first download irrlicht-1.8.5 and put it in the rootfolder
+To compile and run for Linux, run the `make` command and then `bash run.sh`.
+
+To compile for windows, recompiling Irrlicht will be necessary.
+This will be added in future commits.
