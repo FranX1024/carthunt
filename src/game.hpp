@@ -1,5 +1,6 @@
-#define GAME_QUIT_BUTTON_ID = 1;
-#define GAME_RESUME_BUTTON_ID = 2;
+#define GAME_QUIT_BUTTON_ID 1
+#define GAME_RESUME_BUTTON_ID 2
+#define GAME_SCORE_BUTTON_ID 3
 
 class Game : public Activity {
 public:
@@ -22,12 +23,11 @@ public:
   StoreGuy* guy;
 
   int lastT = 0;
-  int lastPauseT = 0;
   double timeAfterDeath = 0;
 
   // GUI objects
   gui::IGUIStaticText* score_widget;
-  gui::IGUIStaticText* pause_widget;
+  gui::IGUIButton* pause_widget;
   wchar_t score_string[50];
 
   gui::IGUIImage* ball_state;
@@ -40,4 +40,6 @@ public:
   bool ninjaStood;
   bool lightChanged;
   bool gamePaused;
+
+  Scoreboard* scoreboard;
 }; 

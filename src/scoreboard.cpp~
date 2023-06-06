@@ -1,0 +1,58 @@
+Scoreboard::Scoreboard(Application* app) : Activity(app) {
+  FILE* sbfile = fopen("./scores", "rb");
+  if(sbfile == NULL) {
+    printf("ERROR: Will not be able to save scores!\n");
+    return;
+  }
+  fread((char*) this->scores, 1, sizeof(this->scores), sbfile);
+  fclose(sbfile);
+
+  this->new_score = -1;
+}
+
+void Scoreboard::setup() {
+  this->app->guienv->addButton(core::rect<s32>(10, 10, 40, 40), 0, 1, L"<<");
+  wchar_t fff[20];
+  swprintf(fff, 20, L"size = %d", sizeof(this->scores));
+  for(int i = 0; i < 10; i++) {
+    int x = 100;
+    int y = 80 + 35 * i;
+    gui::IGUIStaticText* rank;
+    gui::IGUIStaticText* date;
+    gui::IGUIStaticText* name;
+    gui::IGUIStaticText* score;
+    static wchar_t scorestring[5];
+    static wchar_t rankstring[5];
+    swprintf(scorestring, 5, L"%d", this->scores[i].score);
+    swprintf(rankstring, 5, L"#%d", i+1);
+    rank = this->app->guienv->addStaticText(rankstring, core::rect<s32>(x, y, x + 50, y + 30), true, true, 0);
+    date = this->app->guienv->addStaticText(this->scores[i].date, core::rect<s32>(x + 55, y, x + 205, y + 30), true, true, 0);
+    name = this->app->guienv->addStaticText(this->scores[i].name, core::rect<s32>(x + 210, y, x + 510, y + 30), true, true, 0);
+    score = this->app->guienv->addStaticText(scorestring, core::rect<s32>(x + 515, y, x + 595, y + 30), true, true, 0);
+    rank->setOverrideColor(video::SColor(255, 255, 255, 0));
+    date->setOverrideColor(video::SColor(255, 255, 255, 0));
+    name->setOverrideColor(video::SColor(255, 255, 255, 0));
+    score->setOverrideColor(video::SColor(255, 255, 255, 0));
+  }
+}
+
+void Scoreboard::update() {
+
+}
+
+void Scoreboard::onevent(const SEvent &event) {
+  if(event.EventType == EET_GUI_EVENT) {
+    s32 id = event.GUIEvent.Caller->getID();
+    if(event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED) {
+      switch(id) {
+      case 1:
+	this->app->setActivity(TITLE);
+	break;
+      }
+    }
+  }
+}
+
+void Scoreboard::drop() {
+  
+} 

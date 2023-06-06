@@ -1,6 +1,12 @@
+/* Activity refers to a subprogram which takes over
+ * the entire game screen for a period of time. It has
+ * a setup method, update method and an event listener method
+ */
+
 enum ActivityID {
   TITLE,
   GAME,
+  SCOREBOARD,
   ACTIVITY_COUNT
 };
 

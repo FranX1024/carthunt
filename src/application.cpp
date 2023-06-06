@@ -27,9 +27,19 @@ Application::Application() {
     printf("WARNING: Missing font, using built-in font instead.\n");
   }
 
+  // make buttons not transparent
+  for (s32 i=0; i<irr::gui::EGDC_COUNT ; ++i) {
+    video::SColor col = gskin->getColor((gui::EGUI_DEFAULT_COLOR)i);
+    col.setAlpha(255);
+    gskin->setColor((gui::EGUI_DEFAULT_COLOR)i, col);
+  }
+
   // activites
   this->activity[TITLE] = new TitleActivity(this);
+  Scoreboard* scoreboard = new Scoreboard(this);
+  this->activity[SCOREBOARD] = scoreboard;
   Game* game_obj = new Game(this);
+  game_obj->scoreboard = scoreboard;
   this->activity[GAME] = game_obj;
 
   // in case game didn't init properly, kill program

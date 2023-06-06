@@ -87,20 +87,14 @@ void Game::update() {
     return;
   }
 
-  // pause / unpause
-  if(this->app->keydown[27] && newT - this->lastPauseT > 200) {
-    this->lastPauseT = newT;
-    if(this->gamePaused)
-      this->pause_widget->remove();
-    else {
-      this->pause_widget =
-	this->app->guienv->addStaticText(L"<press ESC...>", core::rect<s32>(300, 300, 500, 330), false, false, 0);
-      this->pause_widget->setOverrideColor(video::SColor(255, 255, 255, 0));
-    }
-    this->gamePaused = !this->gamePaused;
-  }
-  
   if(this->gamePaused) return;
+  
+  // pause
+  if(this->app->keydown[27]) {
+    this->pause_widget =
+      this->app->guienv->addButton(core::rect<s32>(320, 300, 480, 330), 0, GAME_RESUME_BUTTON_ID, L"Continue");
+    this->gamePaused = true;
+  }
 
   // precompute
   double player_rotation_sin = sin(this->player->rotation);
@@ -186,7 +180,11 @@ void Game::update() {
     // jump and stab
     this->guy->node->setFrameLoop(112, 125);
     // gui
-    this->app->guienv->addButton(core::rect<s32>(320, 300, 480, 330), 0, 1, L"Title screen");
+    this->app->guienv->addButton(core::rect<s32>(320, 300, 480, 330), 0, GAME_QUIT_BUTTON_ID, L"Title screen");
+    // check if score beats someone on scoreboard
+    if(this->score >= this->scoreboard->scores[9].score) {
+      this->app->guienv->addButton(core::rect<s32>(320, 340, 480, 370), 0, GAME_SCORE_BUTTON_ID, L"Scoreboard!");
+    }
   }
 }
 
@@ -206,8 +204,20 @@ void Game::updateCamera() {
 void Game::onevent(const SEvent &event) {
   if(event.EventType == EET_GUI_EVENT) {
     s32 id = event.GUIEvent.Caller->getID();
-    if(event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED && id == 1) {
-      this->app->setActivity(TITLE);
+    if(event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED) {
+      switch(id) {
+      case GAME_QUIT_BUTTON_ID:
+	this->app->setActivity(TITLE);
+	break;
+      case GAME_RESUME_BUTTON_ID:
+	this->gamePaused = false;
+	this->pause_widget->remove();
+	break;
+      case GAME_SCORE_BUTTON_ID:
+	this->scoreboard->new_score = this->score;
+	this->app->setActivity(SCOREBOARD);
+	break;
+      }
     }
   }
 }

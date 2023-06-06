@@ -4,8 +4,10 @@
 #include <set>
 #include <utility>
 #include <algorithm>
+#include <chrono>
 #include <string.h>
 #include <wchar.h>
+#include <stdlib.h>
 
 #define squareNum(x) x*x
 
@@ -20,6 +22,7 @@ using namespace irr;
 #include "tilemap.hpp"
 
 #include "activity.hpp"
+#include "scoreboard.hpp"
 #include "title.hpp"
 #include "map.hpp"
 #include "ball.hpp"
@@ -29,6 +32,7 @@ using namespace irr;
 #include "application.hpp"
 
 #include "application.cpp"
+#include "scoreboard.cpp"
 #include "storeguy.cpp"
 #include "player.cpp"
 #include "ball.cpp"

@@ -1,0 +1,27 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+struct Scoreboard_row {
+  wchar_t date[11];
+  wchar_t name[17];
+  int score;
+};
+
+Scoreboard_row scores[10];
+
+int main() {
+  for(int i = 0; i < 10; i++) {
+    memcpy(scores[i].date, L"--/--/----", 11 * sizeof(wchar_t));
+    memcpy(scores[i].name, L"................", 17 * sizeof(wchar_t));
+    scores[i].score = 0;
+  }
+  FILE* sbfile = fopen("../bin/scores", "wb");
+  if(sbfile == NULL) {
+    printf("ERROR: can't open file!\n");
+  } else {
+    fwrite((char*) scores, 1, sizeof(scores), sbfile);
+  }
+  printf("Program finished!\n");
+  return 0;
+}
